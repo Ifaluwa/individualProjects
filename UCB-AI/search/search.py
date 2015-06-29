@@ -18,6 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+from game import Directions
 
 class SearchProblem:
     """
@@ -67,7 +68,7 @@ def tinyMazeSearch(problem):
     Returns a sequence of moves that solves tinyMaze.  For any other maze, the
     sequence of moves will be incorrect, so only use this for tinyMaze.
     """
-    from game import Directions
+   
     s = Directions.SOUTH
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
@@ -87,7 +88,22 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    treeFringe = util.Stack()
+    treeFringe.push( (problem.getStartState(), [], []) )
+    while not treeFringe.isEmpty():
+        state, actions, visited = treeFringe.pop()
+
+        for coord, direction,_ in problem.getSuccessors(state):
+            if not coord in visited:
+                if problem.isGoalState(coord):
+                    return actions + [direction]
+                treeFringe.push((coord, actions + [direction], visited + [state] ))
+
+    return []
+
+
+
+
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
