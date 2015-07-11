@@ -1,7 +1,7 @@
 
 import java.util.*;
 import javax.swing.tree.TreeNode;
-import graphs.state;
+
 public class test {
 
 // public static int atoi(String str) {
@@ -349,34 +349,32 @@ public static void removeDuplicates(char[] str){
 //  public static TreeNode createMinimalBST(int array[]) {
 //  	return addToTree(array, 0, array.length - 1);
 //  }
-public static void findSum(TreeNode head, int sum, ArrayList<Integer> buffer, int level) {
-	if (head == null) return;
-	int tmp = sum;
-	buffer.add(head.data);
-	for (int i = level;i >- 1; i--){
-		tmp -= buffer.get(i);
-		if (tmp == 0) print(buffer, i, level);
-	}
+// public static void findSum(TreeNode head, int sum, ArrayList<Integer> buffer, int level) {
+// 	if (head == null) return;
+// 	int tmp = sum;
+// 	buffer.add(head.data);
+// 	for (int i = level;i >- 1; i--){
+// 		tmp -= buffer.get(i);
+// 		if (tmp == 0) print(buffer, i, level);
+// 	}
 	
-	ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
-	ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
-	findSum(head.left, sum, c1, level + 1);
-	findSum(head.right, sum, c2, level + 1);
+// 	ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
+// 	ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
+// 	findSum(head.left, sum, c1, level + 1);
+// 	findSum(head.right, sum, c2, level + 1);
 
-}
+// }
+
 
 
 
 public static void main(String[] args){
-	 int[] array = {1,-3,5,-2,9,-8,-6,4};
-	// String sub = "stone age";
-	// String full = "stage one";
-	// // isAnagram(sub, full);
-	// LinkedListNode n1 = sub;
-	// System.out.println(n1);
-	// System.out.println(pow(2,50));
-	// System.out.println(Integer.MAX_VALUE);
-	// TreeNode firstTree =  createMinimalBST(array);   
+	Stack stack = new Stack();
+	int num = 4;
+	LinkedList myQueue = new LinkedList();
+	myQueue.add((Object) num);
+	System.out.println(myQueue);
+	
 	
 	
 }
