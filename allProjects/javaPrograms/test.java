@@ -418,6 +418,7 @@ public static void main(String[] args){
 	Stack stack = new Stack();
 	int num = 4;
 	LinkedList myQueue = new LinkedList();
+	String new = "";
 	
 	
 	
