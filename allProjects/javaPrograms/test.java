@@ -410,16 +410,23 @@ public static void removeDuplicates(char[] str){
 
 // }
 
-
+public static int findMissingAP(int size, int[] array){
+	int diff = (array[size - 1] - array[0]) / size;
+	
+	for(int i = 0; i < size - 1; i++){
+		if( (array[i+1] - array[i]) != diff ) return (array[i] + diff);
+	}
+	return 0;
+}
 
 
 
 public static void main(String[] args){
-	Stack stack = new Stack();
-	int num = 4;
-	LinkedList myQueue = new LinkedList();
-	String new = "";
-	
+	int[] stuff = {1, 5, 13, 17};
+	int size = 4;
+	int missing;
+	missing = findMissingAP(size, stuff);
+	System.out.println(missing);
 	
 	
 	

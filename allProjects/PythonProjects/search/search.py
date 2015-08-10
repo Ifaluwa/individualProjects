@@ -104,12 +104,40 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    end = util.Queue()
+    end.push( (problem.getStartState(), [],[]) ) 
+    while not end.isEmpty():
+        state, actions, visited_states = end.pop()
+
+        for nState, nAction,_ in problem.getSuccessors(state):
+            if not nState in visited_states:
+                if problem.isGoalState(nState):
+                    return actions + [nAction]
+                end.push( (nState, actions + [nAction], visited_states + [state]) )
+
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    end = util.PriorityQueue()
+    end.push( (problem.getStartState(), []), 0)
+    visited = []
+
+    while not end.isEmpty():
+        state, actions = end.pop()
+
+        if problem.isGoalState(state):
+            return actions
+        visited.append(state)
+        
+        for nState, nAction, steps in problem.getSuccessors(state):
+            if not nState in visited:
+                end.push((nState, actions + [nAction]), problem.getCostOfActions(actions + [nAction]))
+
+    return []
+
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -121,7 +149,26 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    end = util.PriorityQueue()
+    end.push( (problem.getStartState(), []), heuristic(problem.getStartState(), problem) )
+    visited = []
+
+    while not end.isEmpty():
+        state, actions = end.pop()
+
+        if problem.isGoalState(state):
+            return actions
+        visited.append(state)
+
+        for nState, nAction,_ in problem.getSuccessors(state):
+            if not nState in visited:
+                end.push( (nState, actions + [nAction]), problem.getCostOfActions(actions + [nAction]) + heuristic(nState, problem) )
+
+    return []
+
+
+
+
 
 
 # Abbreviations
