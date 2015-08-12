@@ -37,7 +37,7 @@ int main(){
     	cin >> done;
     	if (done == 'n')
       		break;
-  		}
+  	}
   	// close output stream 'People'
   	People.close();
 
