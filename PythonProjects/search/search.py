@@ -74,105 +74,216 @@ def tinyMazeSearch(problem):
 
 def depthFirstSearch(problem):
     """
-    Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
+    Search the deepest nodes in the search tree first
+    Your search algorithm needs to return a list of actions that reaches
+    the goal.  Make sure to implement a graph search algorithm
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
-
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    #print "Start:", problem.getStartState()
+    #print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    #print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    end = util.Stack()
-    end.push( (problem.getStartState(),[],[]) )
-    while not end.isEmpty():
-        state, actions, visited_states = end.pop()
+  
+    closedSet           = set()
+    dataStructure       = util.Stack()
+    path                = []
+    
+    pathTuple = () 
+    if "startState" in dir(problem):
+        nodeCoordStartState = problem.startState
+        pathTuple = ((nodeCoordStartState, "", 0), )
+    elif "getStartState" in dir(problem):
+        nodeCoordStartState = problem.getStartState()
+        pathTuple = ((nodeCoordStartState, "", 0), )
+    else:
+        raise Exception("No recognizable function for getting the Start State")
         
-        for nState, nAction,_ in problem.getSuccessors(state):
-            if not nState in visited_states: #if new state to check has not been checked before
-                if problem.isGoalState(nState):#check if goal state
-                    return actions + [nAction]
-                end.push( (nState, actions + [nAction], visited_states + [state]) ) #add new state to stack, update actions and update visited states
-    return []
+    dataStructure.push(pathTuple)
 
+    result = findSolution(problem, pathTuple, dataStructure, closedSet)
+    
+    if result is None:
+        raise Exception("No solution exists!")
 
+    path = getListOfActions(result)
+    #print "[Final Path] [%s] with length %d" % (str(result), len(result))
+    #print "Path: %s with length %d" % (str(path), len(path)) 
+    return path
 
 def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
+    """
+    Search the shallowest nodes in the search tree first.
+    """
     "*** YOUR CODE HERE ***"
-    end = util.Queue()
-    end.push( (problem.getStartState(), [],[]) ) 
-    while not end.isEmpty():
-        state, actions, visited_states = end.pop()
-
-        for nState, nAction,_ in problem.getSuccessors(state):
-            if not nState in visited_states:
-                if problem.isGoalState(nState):
-                    return actions + [nAction]
-                end.push( (nState, actions + [nAction], visited_states + [state]) )
-
-    return []
-
-def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    end = util.PriorityQueue()
-    end.push( (problem.getStartState(), []), 0)
-    visited = []
-
-    while not end.isEmpty():
-        state, actions = end.pop()
-
-        if problem.isGoalState(state):
-            return actions
-        visited.append(state)
+    closedSet           = set()
+    dataStructure       = util.Queue()
+    path                = []
+   
+    pathTuple = () 
+    if "startState" in dir(problem):
+        nodeCoordStartState = problem.startState
+        pathTuple = ((nodeCoordStartState, "", 0), )
+    elif "getStartState" in dir(problem):
+        nodeCoordStartState = problem.getStartState()
+        pathTuple = ((nodeCoordStartState, "", 0), )
+    else:
+        raise Exception("No recognizable function for getting the Start State")
         
-        for nState, nAction, steps in problem.getSuccessors(state):
-            if not nState in visited:
-                end.push((nState, actions + [nAction]), problem.getCostOfActions(actions + [nAction]))
+    dataStructure.push(pathTuple)
 
-    return []
+    result = findSolution(problem, pathTuple, dataStructure, closedSet)
+    
+    if result is None:
+        raise Exception("No solution exists!")
+    
+    path = getListOfActions(result)
 
+    #print "[Final Path] [%s] with length %d" % (str(result), len(result))
+    #print "Path: %s with length %d" % (str(path), len(path)) 
+    return path
 
+def getListOfActions(path):
+    pathList = []
+    for arc in path:
+        if arc[1] is not "":
+            pathList.append(arc[1])
+
+    return pathList
+     
+def uniformCostSearch(problem):
+    "Search the node of least total cost first. "
+    "*** YOUR CODE HERE ***"
+    
+    closedSet           = set()
+    dataStructure       = util.PriorityQueueWithFunction(lambda (path): problem.getCostOfActions(getListOfActions(path)))
+    path                = []
+    
+    pathTuple = () 
+    if "startState" in dir(problem):
+        nodeCoordStartState = problem.startState
+        pathTuple = ((nodeCoordStartState, "", 0), )
+    elif "getStartState" in dir(problem):
+        nodeCoordStartState = problem.getStartState()
+        pathTuple = ((nodeCoordStartState, "", 0), )
+    else:
+        raise Exception("No recognizable function for getting the Start State")
+
+    dataStructure.push(pathTuple)
+
+    result = findSolution(problem, pathTuple, dataStructure, closedSet)
+    
+    if result is None:
+        raise Exception("No solution exists!")
+  
+    path = getListOfActions(result)
+
+    #print "[Final Path] [%s] with length %d" % (str(result), len(result))
+    #print "Path: %s with length %d" % (str(path), len(path)) 
+    return path 
 
 def nullHeuristic(state, problem=None):
     """
     A heuristic function estimates the cost from the current state to the nearest
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
+
     return 0
 
+def getFn(gN, hN):
+    #print "F(n): %d G(n) %d H(n) %d" % (gN + hN, gN, hN)
+    return gN + hN
+
+def getHeuristicFunction(problem, heuristic): 
+    return lambda (path): getFn(problem.getCostOfActions(getListOfActions(path)), heuristic(path[-1][0], problem))
+
 def aStarSearch(problem, heuristic=nullHeuristic):
-    """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    end = util.PriorityQueue()
-    end.push( (problem.getStartState(), []), heuristic(problem.getStartState(), problem) )
-    visited = []
+    closedSet           = set()
+    dataStructure       = util.PriorityQueueWithFunction(getHeuristicFunction(problem, heuristic))
+    path                = []
+   
+    pathTuple = () 
+    if "startState" in dir(problem):
+        nodeCoordStartState = problem.startState
+        pathTuple = ((nodeCoordStartState, "", 0), )
+    elif "getStartState" in dir(problem):
+        nodeCoordStartState = problem.getStartState()
+        pathTuple = ((nodeCoordStartState, "", 0), )
+    else:
+        raise Exception("No recognizable function for getting the Start State")
 
-    while not end.isEmpty():
-        state, actions = end.pop()
+    dataStructure.push(pathTuple)
 
-        if problem.isGoalState(state):
-            return actions
-        visited.append(state)
+    result = findSolution(problem, pathTuple, dataStructure, closedSet)
+    
+    if result is None:
+        raise Exception("No solution exists!")
+  
+    path = getListOfActions(result)
 
-        for nState, nAction,_ in problem.getSuccessors(state):
-            if not nState in visited:
-                end.push( (nState, actions + [nAction]), problem.getCostOfActions(actions + [nAction]) + heuristic(nState, problem) )
-
-    return []
-
-
+    #print "[Final Path] [%s] with length %d" % (str(result), len(result))
+    #print "Path: %s with length %d" % (str(path), len(path)) 
+    return path 
 
 
+def findSolution(problem=None, startNode=(((0,0), "", 0)), dataStructure=util.Stack(), closedSet=None):
+    """
+    A function that takes a problem and identifies if there is a solution to the pacman maze.  Returns
+    a list of arcs if the solution does exist.
+    """
+    
+    nodeLocationIndex       = 0
+    nodeArcDirectionIndex   = 1
+    nodeArcCostIndex        = 2
+    problemStateIndex        = 3 
+     
+    if problem is None:
+        #print "No Problem"
+        return None
 
+    if dataStructure.isEmpty():
+        #print "[Backtrack] Empty Queue"
+        return None   
+
+    while not dataStructure.isEmpty():
+        destPath = dataStructure.pop()
+        destNode = destPath[-1]
+        destNodeCord = destNode[nodeLocationIndex]
+        consideredNodeDir = destNode[nodeArcDirectionIndex]
+        problemState = None
+
+        if closedSet is not None and destNodeCord in closedSet:
+            #print "[Visited] (%s)" % str(destNodeCord)
+            continue
+     
+        #print "[Expanding] (%s)" % str(destPath) 
+        
+        if problemState is not None and problem.isGoalState(problemState): 
+            #print "[Success] Reached Goal State at (%s)" % str(destNodeCord)
+            return destPath
+        elif problemState is None and problem.isGoalState(destNodeCord):
+            return destPath
+
+        successors = ()
+        successors = problem.getSuccessors(destNodeCord)
+        
+        if not successors:
+            #print "[Dead-end] %s" % str(destNodeCord)
+            continue
+
+        nodesThisLevel = len(successors)
+        for node in successors:
+            #print "[Child] (%s), [Parent] (%s)" % (str(node), str(destNode))
+            dataStructure.push(tuple(list(destPath) + [node])) 
+
+        if closedSet is not None:
+            closedSet.add(destNodeCord)
+
+    return None
 
 # Abbreviations
 bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
+

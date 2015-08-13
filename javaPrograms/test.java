@@ -4,14 +4,17 @@ import javax.swing.tree.TreeNode;
 
 public class test {
 
+
+/* ATOI FUNCTION  -  O(N) */
 public static int atoi(String str) {
+	//check for if string is empty or one number
 	if (str == null || str.length() < 1)
 		return 0;
  
 	// trim white spaces
 	str = str.trim();
 
- 
+ 	//sets the flag for positive or negative signs
 	char flag = '+';
  
 	// check negative or positive
@@ -45,78 +48,101 @@ public static int atoi(String str) {
 	return (int) result;
 }
 
-public static void removeDuplicates(char[] str){
-	if (str == null) return;
- 	int len = str.length;
- 	if (len < 2) return;
+
+/* REMOVE DUPLICATES FUNCTION FOR STRINGS - O(N^2) */
+public static String removeDuplicates(String str){
+	//create character array of the said string
+	char[] charArray = str.toCharArray();
+
+	//edge cases, empty string or one character string
+	if (charArray == null) return str;
+ 	if (charArray.length < 2) return str;
+ 	
+ 	//initialize tail end
  	int tail = 1;
 
-
- 	for(int i = 1; i < str.length; ++i){
+ 	//starting from the first character(innerloop) check for and remove duplicates 
+ 	for(int i = 1; i < charArray.length; ++i){
  		for(int j = 0; j < tail; ++j){
- 			if (str[i] == str[j]) str[i] = 0;
+ 			if (charArray[i] == charArray[j]) charArray[i] = 0;
  		}
  		tail++;
  	}
 
- 	System.out.println(str);
+ 	// convert character array to string and return
+ 	return new String(charArray);
 
 }
 
+/* FIND MAX CROSSING SUB-ARRAY * O(N) */
 public static HashSet<Integer> findMaxCrossingSubArray(int[] array){
+	//set minimum sentinel values for the left and right sum, find index of median
 	int leftSum = Integer.MIN_VALUE;
 	int rightSum = Integer.MIN_VALUE;
 	int mid = array.length/2;
 
+	//indices for how far left and right the max crossing sub array goes
+	int lIndex = 0, rIndex = 0;
 
-	
+
+	//left-side
 	int lSum = 0;
 	for(int i = mid - 1; i >= 0; i--){
 		lSum = array[i] + lSum;
 		if (lSum > leftSum){
 			leftSum = lSum;
+			lIndex = i;
 		}
 	}
 
+	//right-side
 	int rSum = 0;
 	for(int j = mid; j < array.length; j++){
 		rSum = array[j] + rSum;
 		if(rSum >rightSum){
 			rightSum = rSum;
+			rIndex = j;
 		}
 	}
 
 
 	HashSet<Integer> stuff = new HashSet<Integer>();
-	stuff.add(leftSum);
-	stuff.add(rightSum);
-	//stuff.add(leftSum+rightSum);
+	stuff.add(lIndex);
+	stuff.add(rIndex);
+	stuff.add(leftSum+rightSum);
 	return stuff;
 
 }
 
+/* QUICKSORT  - best-case:O(NlogN) - worst-case: O(N^2) */
+public static void quickSort(int[] array, int lo, int hi){
+	//index of the middle element
+	int mid;
 
-public static void quickSort(int[] array, int p, int r){
-	int q;
-	if(p < r){
-		q = partition(array, p, r);
-		quickSort(array, p, q-1);
-		quickSort(array, q+1, r);
+	if(lo < hi){
+		mid = partition(array, lo, hi);
+		quickSort(array, lo, mid-1);
+		quickSort(array, mid+1, hi);
 	} 
 
 }
 
 public static int partition(int[] array, int p, int r){
+
 	//resolves issue of if index is out of bounds
 	if(r == array.length){
 		r -= 1;		
 	} 
 	
-	int x = array[r];
+	
+	int pivot = array[r];
 	int i = p-1;
 	for(int j = p; j < r; j++){
-		if(array[j] <= x){
+		if(array[j] <= pivot){
+			//move wall forward
 			i+=1;
+			
+			//swap and place before wall
 			int tmp1;
 			tmp1 = array[i];
 			array[i] = array[j];
@@ -125,19 +151,26 @@ public static int partition(int[] array, int p, int r){
 		
 	}
 	
+	//swap and place pivot in final resting place
 	int tmp;
 	tmp = array[i+1];
 	array[i+1] = array[r];
 	array[r] = tmp;
+
+	//return index of pivot
 	return i+1;
 }
 
+
+/* BINARY SEARCH O(logN) */
 public static int binarySearch(int[] array, int needle, int start, int end){
 	int mid = (start+end)/2;
 	//base case
 	if(array[mid] == needle){
 		return mid;
 	}
+
+	//recursive case
 	else if(array[mid] > needle){
 		return(binarySearch(array, needle, start, mid));
 	} else {
@@ -146,22 +179,22 @@ public static int binarySearch(int[] array, int needle, int start, int end){
 }
 
 
+/* MERGE SORT O(nLOGn) */
+public static int[] mergeSort(int[] array, int lo, int hi){
+	int mid;
 
-public static int[] mergeSort(int[] array, int p, int r){
-	int q;
 
-
-	if(p < r){
-		q = (p + r)/2;
-		mergeSort(array, p, q);
-		mergeSort(array,q +1 , r);
-		merge(array, p, q, r);
+	if(lo < hi){
+		mid = (lo + hi)/2;
+		mergeSort(array, lo, mid);
+		mergeSort(array,mid+1 , hi);
+		merge(array, lo, mid, hi);
 	}
 	return array;
 }
 
-public static int[] merge(int[] array, int p, int q, int r){
-	int n1 = q - p;
+public static int[] merge(int[] array, int lo, int mid, int hi){
+	int size = mid - lo;
 	if(n1 == 0) return array;
 	int n2 = r - q;
 
@@ -208,225 +241,228 @@ public static int[] merge(int[] array, int p, int q, int r){
 	return array;
 }
 
-public static void reverse(Node current){
-	if(current == NULL){
-		return;
-	}
+// public static void reverse(Node current){
+// 	if(current == NULL){
+// 		return;
+// 	}
 
-	//base case
-	if(current.next == NULL){
-		head = current;
-		return;
-	}
+// 	//base case
+// 	if(current.next == NULL){
+// 		head = current;
+// 		return;
+// 	}
 
-	reverse(current.next);
-	current.next.next = current;
-	current.prev = current.next;
-	current.next = null;
+// 	reverse(current.next);
+// 	current.next.next = current;
+// 	current.prev = current.next;
+// 	current.next = null;
 
-}
+// }
 
-public static String reverseString(String str){
-	StringBuilder nStr = new StringBuilder();
+// public static String reverseString(String str){
+// 	StringBuilder nStr = new StringBuilder();
 
-	for(int i = str.length() - 1; i >= 0; i--){
-		nStr.append(str.charAt(i));
+// 	for(int i = str.length() - 1; i >= 0; i--){
+// 		nStr.append(str.charAt(i));
 
-	}
-	return nStr.toString();
-}
+// 	}
+// 	return nStr.toString();
+// }
 
-public static boolean hasSubstring(String sub, String full){
+// public static boolean hasSubstring(String sub, String full){
 
-	for(int i = 0; i < full.length(); i++){
-		boolean notMatch = false;
-		for(int j = 0; j < sub.length(); j++){
-			if(sub.charAt(j) != full.charAt(i+j)) notMatch = true;
-			break;
-		}
-		if(!notMatch) return true;
-	}
-	return false;
-}
+// 	for(int i = 0; i < full.length(); i++){
+// 		boolean notMatch = false;
+// 		for(int j = 0; j < sub.length(); j++){
+// 			if(sub.charAt(j) != full.charAt(i+j)) notMatch = true;
+// 			break;
+// 		}
+// 		if(!notMatch) return true;
+// 	}
+// 	return false;
+// }
 
-public static HashSet<Integer> targetSum(int[] array, int tSum){
-	quickSort(array, 0, array.length);
-	int i = 0;
-	int j = array.length - 1;
-	HashSet<Integer> result = new HashSet<>();
+// public static HashSet<Integer> targetSum(int[] array, int tSum){
+// 	quickSort(array, 0, array.length);
+// 	int i = 0;
+// 	int j = array.length - 1;
+// 	HashSet<Integer> result = new HashSet<>();
 
-	while(i <= j){
-		if((array[i] + array[j]) == tSum){
-			result.add(array[i]);
-			result.add(array[j]);
-			return result;
-		} else if ((array[i] + array[j]) < tSum){
-			i++;
-		} else {
-			j--;
-		}
+// 	while(i <= j){
+// 		if((array[i] + array[j]) == tSum){
+// 			result.add(array[i]);
+// 			result.add(array[j]);
+// 			return result;
+// 		} else if ((array[i] + array[j]) < tSum){
+// 			i++;
+// 		} else {
+// 			j--;
+// 		}
 
-	}
+// 	}
 
-	return result;
-}
+// 	return result;
+// }
 
-public static int oddManOut(int[] array){
-	int sum = 0;
-	for(int i = 0; i < array.length; i++){
-		sum ^= array[i];
-	}
-	return sum;
+// public static int oddManOut(int[] array){
+// 	int sum = 0;
+// 	for(int i = 0; i < array.length; i++){
+// 		sum ^= array[i];
+// 	}
+// 	return sum;
 
-}
+// }
 
-public static void removeWhiteSpaces(String str){
-	char[] cStr = str.toCharArray();
-	for(int i = 0; i < cStr.length; i ++){
-		if(cStr[i] == ' ') cStr[i] = 0;
-	}
-	String result = new String(cStr);
-	System.out.println(result);
-}
+// public static void removeWhiteSpaces(String str){
+// 	char[] cStr = str.toCharArray();
+// 	for(int i = 0; i < cStr.length; i ++){
+// 		if(cStr[i] == ' ') cStr[i] = 0;
+// 	}
+// 	String result = new String(cStr);
+// 	System.out.println(result);
+// }
 
-public static boolean isDuplicate(String str){
-	boolean[] data = new boolean[256];
+// public static boolean isDuplicate(String str){
+// 	boolean[] data = new boolean[256];
 
-	for(int i = 0; i < str.length(); i++){
-		if(data[str.charAt(i)]) return false;
-		data[str.charAt(i)] = true;
-	}
-	return true;
+// 	for(int i = 0; i < str.length(); i++){
+// 		if(data[str.charAt(i)]) return false;
+// 		data[str.charAt(i)] = true;
+// 	}
+// 	return true;
 
-}
+// }
 
-public static boolean isAnagram(String a, String b){
-	int[] charsInA = new int[256];
-	int uniqueChars = 0;
-	int uniqueCharsB = 0;
+// public static boolean isAnagram(String a, String b){
+// 	int[] charsInA = new int[256];
+// 	int uniqueChars = 0;
+// 	int uniqueCharsB = 0;
 
-	for(int i = 0; i < a.length(); i++){
-		if(a.charAt(i) == ' ') continue;
-		if(charsInA[a.charAt(i)] == 0) ++uniqueChars;
-		++charsInA[a.charAt(i)];
-	}
+// 	for(int i = 0; i < a.length(); i++){
+// 		if(a.charAt(i) == ' ') continue;
+// 		if(charsInA[a.charAt(i)] == 0) ++uniqueChars;
+// 		++charsInA[a.charAt(i)];
+// 	}
 
 
-	for(int j = 0; j < b.length(); j++){
-		if(b.charAt(j) == ' ') continue;
-		if(charsInA[b.charAt(j)] == 0) return false;
-		--charsInA[b.charAt(j)];
-		if(charsInA[b.charAt(j)] == 0) ++uniqueCharsB;
-	}
+// 	for(int j = 0; j < b.length(); j++){
+// 		if(b.charAt(j) == ' ') continue;
+// 		if(charsInA[b.charAt(j)] == 0) return false;
+// 		--charsInA[b.charAt(j)];
+// 		if(charsInA[b.charAt(j)] == 0) ++uniqueCharsB;
+// 	}
 
-	return (uniqueChars == uniqueCharsB);
-}
+// 	return (uniqueChars == uniqueCharsB);
+// }
 	
-public static long pow(int num, int exp){
-	if(exp == 0) return 1;
-	if(exp == 1) return num;
+// public static long pow(int num, int exp){
+// 	if(exp == 0) return 1;
+// 	if(exp == 1) return num;
 
-	long result = num;
+// 	long result = num;
 
-	for(int i = 1; i < exp; i++){
-		result *= num;
-	}
-	return result;
-}
-public static TreeNode addToTree(int arr[], int start, int end){
-	if (end < start) {
- 		return null;
- 	}
+// 	for(int i = 1; i < exp; i++){
+// 		result *= num;
+// 	}
+// 	return result;
+// }
+// public static TreeNode addToTree(int arr[], int start, int end){
+// 	if (end < start) {
+//  		return null;
+//  	}
 
- 	int mid = (start + end) / 2;
+//  	int mid = (start + end) / 2;
 
- 	TreeNode n = new TreeNode(arr[mid]);
- 	n.left = addToTree(arr, start, mid - 1);
- 	n.right = addToTree(arr, mid + 1, end);
- 	return n;
- }
+//  	TreeNode n = new TreeNode(arr[mid]);
+//  	n.left = addToTree(arr, start, mid - 1);
+//  	n.right = addToTree(arr, mid + 1, end);
+//  	return n;
+//  }
 
- public static TreeNode createMinimalBST(int array[]) {
- 	return addToTree(array, 0, array.length - 1);
- }
-public static void findSum(TreeNode head, int sum, ArrayList<Integer> buffer, int level) {
-	if (head == null) return;
-	int tmp = sum;
-	buffer.add(head.data);
-	for (int i = level;i >- 1; i--){
-		tmp -= buffer.get(i);
-		if (tmp == 0) print(buffer, i, level);
-	}
+//  public static TreeNode createMinimalBST(int array[]) {
+//  	return addToTree(array, 0, array.length - 1);
+//  }
+// public static void findSum(TreeNode head, int sum, ArrayList<Integer> buffer, int level) {
+// 	if (head == null) return;
+// 	int tmp = sum;
+// 	buffer.add(head.data);
+// 	for (int i = level;i >- 1; i--){
+// 		tmp -= buffer.get(i);
+// 		if (tmp == 0) print(buffer, i, level);
+// 	}
 	
-	ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
-	ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
-	findSum(head.left, sum, c1, level + 1);
-	findSum(head.right, sum, c2, level + 1);
+// 	ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
+// 	ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
+// 	findSum(head.left, sum, c1, level + 1);
+// 	findSum(head.right, sum, c2, level + 1);
 
-}
+// }
 
 
-static int columnForRow[] = new int[8];
-boolean check(int row){
+// static int columnForRow[] = new int[8];
+// boolean check(int row){
 
-	for(int i = 0; i < row; i++){
-		int diff = Math.abs(columnForRow[i] - columnForRow[row]);
-		if(diff == 0 | diff == row - 1) return false;
-	}
-	return true;  //returns true if the pieces are not on the same column or diagonal
-}
+// 	for(int i = 0; i < row; i++){
+// 		int diff = Math.abs(columnForRow[i] - columnForRow[row]);
+// 		if(diff == 0 | diff == row - 1) return false;
+// 	}
+// 	return true;  //returns true if the pieces are not on the same column or diagonal
+// }
 
-void placeQueen(int row){
-	// base case for if we've placed on pieces
-	if(row == FINAL_SIZE){ 
-		printBoard();
-		return;
-	}
+// void placeQueen(int row){
+// 	// base case for if we've placed on pieces
+// 	if(row == FINAL_SIZE){ 
+// 		printBoard();
+// 		return;
+// 	}
 
-	//recursive case keeps checking until finds somewhere to place, if it doesn't it backtracks
-	for(int i = 0; i < FINAL_SIZE; i++){
-		columnForRow[row] = i;
-		if(check(row)){
-			placeQueen(row + 1);
-		}
-	}
+// 	//recursive case keeps checking until finds somewhere to place, if it doesn't it backtracks
+// 	for(int i = 0; i < FINAL_SIZE; i++){
+// 		columnForRow[row] = i;
+// 		if(check(row)){
+// 			placeQueen(row + 1);
+// 		}
+// 	}
 
-}
+// }
 
-boolean findElem(int[][] mat, int m, int n, int element){
-	int row = 0;
-	int col = n - 1; 
-	while(row < m && col >= 0){
-		if(mat[row][col] == element){
-			return true;
-		}
-		if(mat[row][col] > element){
-			col--;
-		} else {
-			row++;
-		}
-	}
-	return false;
+// boolean findElem(int[][] mat, int m, int n, int element){
+// 	int row = 0;
+// 	int col = n - 1; 
+// 	while(row < m && col >= 0){
+// 		if(mat[row][col] == element){
+// 			return true;
+// 		}
+// 		if(mat[row][col] > element){
+// 			col--;
+// 		} else {
+// 			row++;
+// 		}
+// 	}
+// 	return false;
 
-}
+// }
 
-public static int findMissingAP(int size, int[] array){
-	int diff = (array[size - 1] - array[0]) / size;
+// public static int findMissingAP(int size, int[] array){
+// 	int diff = (array[size - 1] - array[0]) / size;
 	
-	for(int i = 0; i < size - 1; i++){
-		if( (array[i+1] - array[i]) != diff ) return (array[i] + diff);
-	}
-	return 0;
-}
+// 	for(int i = 0; i < size - 1; i++){
+// 		if( (array[i+1] - array[i]) != diff ) return (array[i] + diff);
+// 	}
+// 	return 0;
+// }
 
 
 
 public static void main(String[] args){
-	int[] stuff = {1, 5, 13, 17};
-	int size = 4;
-	int missing;
-	missing = findMissingAP(size, stuff);
-	System.out.println(missing);
+	String atoiVariable = "77";
+	String duplicateString = "faded af";
+	int[] maxCrossingArray = {1,-2,3,6,7,8,-9,2,4};
+	System.out.println("function atoi >> " + atoi(atoiVariable));
+	System.out.println("function removeDuplicates >> " + removeDuplicates(duplicateString));
+	System.out.println("function maxCrossingArray >> " + findMaxCrossingSubArray(maxCrossingArray));
+	quickSort(maxCrossingArray, 0, maxCrossingArray.length);
+	System.out.println("Quicksorted array > " + Arrays.toString(maxCrossingArray) );
 	
 	
 	
