@@ -194,7 +194,7 @@ public static int[] mergeSort(int[] array, int lo, int hi){
 }
 
 public static int[] merge(int[] array, int lo, int mid, int hi){
-	int n1 = q - p;
+	int size = mid - lo;
 	if(n1 == 0) return array;
 	int n2 = r - q;
 
