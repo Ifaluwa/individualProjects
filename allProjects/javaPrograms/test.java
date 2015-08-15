@@ -61,7 +61,7 @@ public static String removeDuplicates(String str){
  	//initialize tail end
  	int tail = 1;
 
- 	//starting from the first character(innerloop) check for and remove duplicates 
+ 	//starting from the second character(innerloop) check for if any character before it is a duplicate
  	for(int i = 1; i < charArray.length; ++i){
  		for(int j = 0; j < tail; ++j){
  			if (charArray[i] == charArray[j]) charArray[i] = 0;
@@ -71,7 +71,6 @@ public static String removeDuplicates(String str){
 
  	// convert character array to string and return
  	return new String(charArray);
-
 }
 
 /* FIND MAX CROSSING SUB-ARRAY * O(N) */
@@ -180,73 +179,75 @@ public static int binarySearch(int[] array, int needle, int start, int end){
 
 
 /* MERGE SORT O(nLOGn) */
-public static int[] mergeSort(int[] array, int lo, int hi){
-	int mid;
+// public static int[] mergeSort(int[] array, int lo, int hi){
+// 	int mid;
 
 
-	if(lo < hi){
-		mid = (lo + hi)/2;
-		mergeSort(array, lo, mid);
-		mergeSort(array,mid+1 , hi);
-		merge(array, lo, mid, hi);
-	}
-	return array;
-}
+// 	if(lo < hi){
+// 		mid = (lo + hi)/2;
+// 		mergeSort(array, lo, mid);
+// 		mergeSort(array,mid+1 , hi);
+// 		merge(array, lo, mid, hi);
+// 	}
+// 	return array;
+// }
 
-public static int[] merge(int[] array, int lo, int mid, int hi){
-	int size = mid - lo;
-	if(n1 == 0) return array;
-	int n2 = r - q;
+// public static int[] merge(int[] array, int lo, int mid, int hi){
+// 	int size = mid - lo;
+// 	if(n1 == 0) return array;
+// 	int n2 = r - q;
 
 
-	int[] leftArray = new int[n1];
-	int[] rightArray = new int[n2];
+// 	int[] leftArray = new int[n1];
+// 	int[] rightArray = new int[n2];
 	
 	
-	int i;
-	int j;
+// 	int i;
+// 	int j;
 
-	for(i = 0; i < n1; i++){
-		leftArray[i] = array[p + i];
-	}
-	for(j = 0; j < n2; j++){
-		rightArray[j] = array[q + j];
-	}
-	int lcv = 0;
-	int rcv = 0;
+// 	for(i = 0; i < n1; i++){
+// 		leftArray[i] = array[p + i];
+// 	}
+// 	for(j = 0; j < n2; j++){
+// 		rightArray[j] = array[q + j];
+// 	}
+// 	int lcv = 0;
+// 	int rcv = 0;
 
 
 
-	for(int k = p; k < r; k++){
-		if(lcv == n1){
-			array[k] = rightArray[rcv];
-			rcv++;
-		} else if(rcv == n2) {
-			array[k] = leftArray[lcv];
-			lcv++;
-		}else if (leftArray[lcv] <= rightArray[rcv]){
-			array[k] = leftArray[lcv];
-			lcv += 1;
-		} else {
-			array[k] = rightArray[rcv];
-			rcv += 1;
-		}
-	}
-
-	if(leftArray.length == 4){
-		System.out.println(Arrays.toString(leftArray));
-		System.out.println(Arrays.toString(rightArray));
-			
-	}
-	return array;
-}
-
-// public static void reverse(Node current){
-// 	if(current == NULL){
-// 		return;
+// 	for(int k = p; k < r; k++){
+// 		if(lcv == n1){
+// 			array[k] = rightArray[rcv];
+// 			rcv++;
+// 		} else if(rcv == n2) {
+// 			array[k] = leftArray[lcv];
+// 			lcv++;
+// 		}else if (leftArray[lcv] <= rightArray[rcv]){
+// 			array[k] = leftArray[lcv];
+// 			lcv += 1;
+// 		} else {
+// 			array[k] = rightArray[rcv];
+// 			rcv += 1;
+// 		}
 // 	}
 
-// 	//base case
+// 	if(leftArray.length == 4){
+// 		System.out.println(Arrays.toString(leftArray));
+// 		System.out.println(Arrays.toString(rightArray));
+			
+// 	}
+// 	return array;
+// }
+
+// /* REVERSING A LINKED LIST */
+// public static void reverse(Node current){
+// 	//check for empty list
+// 	if(current == NULL ){
+// 		return;
+// 	}
+	
+// 	// BASE CASE
 // 	if(current.next == NULL){
 // 		head = current;
 // 		return;
@@ -254,118 +255,140 @@ public static int[] merge(int[] array, int lo, int mid, int hi){
 
 // 	reverse(current.next);
 // 	current.next.next = current;
-// 	current.prev = current.next;
+// 	/*current.next = current.prev;  for doubly linked list */
 // 	current.next = null;
 
 // }
 
-// public static String reverseString(String str){
-// 	StringBuilder nStr = new StringBuilder();
 
-// 	for(int i = str.length() - 1; i >= 0; i--){
-// 		nStr.append(str.charAt(i));
+/* reverse string O(N) */
+public static String reverseString(String str){
+	StringBuilder nStr = new StringBuilder();
 
-// 	}
-// 	return nStr.toString();
-// }
+	for(int i = str.length() - 1; i >= 0; i--){
+		nStr.append(str.charAt(i));
 
-// public static boolean hasSubstring(String sub, String full){
+	}
+	return nStr.toString();
+}
 
-// 	for(int i = 0; i < full.length(); i++){
-// 		boolean notMatch = false;
-// 		for(int j = 0; j < sub.length(); j++){
-// 			if(sub.charAt(j) != full.charAt(i+j)) notMatch = true;
-// 			break;
-// 		}
-// 		if(!notMatch) return true;
-// 	}
-// 	return false;
-// }
+// check if a string has a sub string O(N^2) */
+public static boolean hasSubstring(String sub, String full){
 
-// public static HashSet<Integer> targetSum(int[] array, int tSum){
-// 	quickSort(array, 0, array.length);
-// 	int i = 0;
-// 	int j = array.length - 1;
-// 	HashSet<Integer> result = new HashSet<>();
-
-// 	while(i <= j){
-// 		if((array[i] + array[j]) == tSum){
-// 			result.add(array[i]);
-// 			result.add(array[j]);
-// 			return result;
-// 		} else if ((array[i] + array[j]) < tSum){
-// 			i++;
-// 		} else {
-// 			j--;
-// 		}
-
-// 	}
-
-// 	return result;
-// }
-
-// public static int oddManOut(int[] array){
-// 	int sum = 0;
-// 	for(int i = 0; i < array.length; i++){
-// 		sum ^= array[i];
-// 	}
-// 	return sum;
-
-// }
-
-// public static void removeWhiteSpaces(String str){
-// 	char[] cStr = str.toCharArray();
-// 	for(int i = 0; i < cStr.length; i ++){
-// 		if(cStr[i] == ' ') cStr[i] = 0;
-// 	}
-// 	String result = new String(cStr);
-// 	System.out.println(result);
-// }
-
-// public static boolean isDuplicate(String str){
-// 	boolean[] data = new boolean[256];
-
-// 	for(int i = 0; i < str.length(); i++){
-// 		if(data[str.charAt(i)]) return false;
-// 		data[str.charAt(i)] = true;
-// 	}
-// 	return true;
-
-// }
-
-// public static boolean isAnagram(String a, String b){
-// 	int[] charsInA = new int[256];
-// 	int uniqueChars = 0;
-// 	int uniqueCharsB = 0;
-
-// 	for(int i = 0; i < a.length(); i++){
-// 		if(a.charAt(i) == ' ') continue;
-// 		if(charsInA[a.charAt(i)] == 0) ++uniqueChars;
-// 		++charsInA[a.charAt(i)];
-// 	}
+	for(int i = 0; i < full.length(); i++){
+		boolean notMatch = false;
+		for(int j = 0; j < sub.length(); j++){
+			if(sub.charAt(j) != full.charAt(i+j)) notMatch = true;
+			break;
+		}
+		if(!notMatch) return true;
+	}
+	return false;
+}
 
 
-// 	for(int j = 0; j < b.length(); j++){
-// 		if(b.charAt(j) == ' ') continue;
-// 		if(charsInA[b.charAt(j)] == 0) return false;
-// 		--charsInA[b.charAt(j)];
-// 		if(charsInA[b.charAt(j)] == 0) ++uniqueCharsB;
-// 	}
+// given a sorted array of numbers find a target sum O(N) */
+public static HashSet<Integer> targetSum(int[] array, int tSum){
+	quickSort(array, 0, array.length);
+	int i = 0;
+	int j = array.length - 1;
+	HashSet<Integer> result = new HashSet<>();
 
-// 	return (uniqueChars == uniqueCharsB);
-// }
+	while(i <= j){
+		if((array[i] + array[j]) == tSum){
+			result.add(array[i]);
+			result.add(array[j]);
+			return result;
+		} else if ((array[i] + array[j]) < tSum){
+			i++;
+		} else {
+			j--;
+		}
+
+	}
+
+	return result;
+}
+
+
+/* find the number that appears an odd number of times */
+public static int oddManOut(int[] array){
+	int sum = 0;
+	for(int i = 0; i < array.length; i++){
+		sum ^= array[i];
+	}
+	return sum;
+
+}
+
+
+/* O(N) */
+public static void removeWhiteSpaces(String str){
+	char[] cStr = str.toCharArray();
+	for(int i = 0; i < cStr.length; i ++){
+		if(cStr[i] == ' ') cStr[i] = 0;
+	}
+	String result = new String(cStr);
+	System.out.println(result);
+}
+
+/* check for if a string has duplicates time - O(N) space - O(N) */
+public static boolean isDuplicate(String str){
+	boolean[] data = new boolean[256];
+
+	for(int i = 0; i < str.length(); i++){
+		if(data[str.charAt(i)]) return false;
+		data[str.charAt(i)] = true;
+	}
+	return true;
+
+}
+
+/* checks to see if a string is an anagram of another O(N) */
+public static boolean isAnagram(String a, String b){
+	int[] charsInA = new int[256];
+	int uniqueCharsA = 0;
+	int uniqueCharsB = 0;
+
+
+	// finds the amount of occurences of the unique characters in the first string
+	for(int i = 0; i < a.length(); i++){
+		if(a.charAt(i) == ' ') continue;
+		if(charsInA[a.charAt(i)] == 0) ++uniqueCharsA;
+		++charsInA[a.charAt(i)];
+	}
+
+
+	//cross checks it with the second character
+	//checks for if the character was in A
+	//subtracts the occurence by one, checks if its 0 and adds it to the amount of unique characters
+	for(int j = 0; j < b.length(); j++){
+		if(b.charAt(j) == ' ') continue;
+		if(charsInA[b.charAt(j)] == 0) return false;
+		--charsInA[b.charAt(j)];
+		if(charsInA[b.charAt(j)] == 0) ++uniqueCharsB;
+	}
+
+	return (uniqueCharsA == uniqueCharsB);
+}
 	
-// public static long pow(int num, int exp){
-// 	if(exp == 0) return 1;
-// 	if(exp == 1) return num;
+/* the power of a number with no exp functions O(N) */	
+public static long pow(int num, int exp){
+	if(exp == 0) return 1;
+	if(exp == 1) return num;
 
-// 	long result = num;
+	long result = num;
 
-// 	for(int i = 1; i < exp; i++){
-// 		result *= num;
-// 	}
-// 	return result;
-// }
+	for(int i = 1; i < exp; i++){
+		result *= num;
+	}
+	return result;
+}
+
+/* MINIMAL BST O(LOGN) */
+ // public static TreeNode createMinimalBST(int array[]) {
+ // 	return addToTree(array, 0, array.length - 1);
+ // }
 // public static TreeNode addToTree(int arr[], int start, int end){
 // 	if (end < start) {
 //  		return null;
@@ -379,78 +402,78 @@ public static int[] merge(int[] array, int lo, int mid, int hi){
 //  	return n;
 //  }
 
-//  public static TreeNode createMinimalBST(int array[]) {
-//  	return addToTree(array, 0, array.length - 1);
-//  }
-// public static void findSum(TreeNode head, int sum, ArrayList<Integer> buffer, int level) {
-// 	if (head == null) return;
-// 	int tmp = sum;
-// 	buffer.add(head.data);
-// 	for (int i = level;i >- 1; i--){
-// 		tmp -= buffer.get(i);
-// 		if (tmp == 0) print(buffer, i, level);
-// 	}
+
+public static void findSum(TreeNode head, int sum, ArrayList<Integer> buffer, int level) {
+	if (head == null) return;
+	int tmp = sum;
+	buffer.add(head.data);
+	for (int i = level;i >- 1; i--){
+		tmp -= buffer.get(i);
+		if (tmp == 0) print(buffer, i, level);
+	}
 	
-// 	ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
-// 	ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
-// 	findSum(head.left, sum, c1, level + 1);
-// 	findSum(head.right, sum, c2, level + 1);
+	ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
+	ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
+	findSum(head.left, sum, c1, level + 1);
+	findSum(head.right, sum, c2, level + 1);
 
-// }
+}
 
 
-// static int columnForRow[] = new int[8];
-// boolean check(int row){
+static int columnForRow[] = new int[8];
+boolean check(int row){
 
-// 	for(int i = 0; i < row; i++){
-// 		int diff = Math.abs(columnForRow[i] - columnForRow[row]);
-// 		if(diff == 0 | diff == row - 1) return false;
-// 	}
-// 	return true;  //returns true if the pieces are not on the same column or diagonal
-// }
+	for(int i = 0; i < row; i++){
+		int diff = Math.abs(columnForRow[i] - columnForRow[row]);
+		if(diff == 0 | diff == row - 1) return false;
+	}
+	return true;  //returns true if the pieces are not on the same column or diagonal
+}
 
-// void placeQueen(int row){
-// 	// base case for if we've placed on pieces
-// 	if(row == FINAL_SIZE){ 
-// 		printBoard();
-// 		return;
-// 	}
+void placeQueen(int row){
+	// base case for if we've placed on pieces
+	if(row == FINAL_SIZE){ 
+		printBoard();
+		return;
+	}
 
-// 	//recursive case keeps checking until finds somewhere to place, if it doesn't it backtracks
-// 	for(int i = 0; i < FINAL_SIZE; i++){
-// 		columnForRow[row] = i;
-// 		if(check(row)){
-// 			placeQueen(row + 1);
-// 		}
-// 	}
+	//recursive case keeps checking until finds somewhere to place, if it doesn't it backtracks
+	for(int i = 0; i < FINAL_SIZE; i++){
+		columnForRow[row] = i;
+		if(check(row)){
+			placeQueen(row + 1);
+		}
+	}
 
-// }
+}
 
-// boolean findElem(int[][] mat, int m, int n, int element){
-// 	int row = 0;
-// 	int col = n - 1; 
-// 	while(row < m && col >= 0){
-// 		if(mat[row][col] == element){
-// 			return true;
-// 		}
-// 		if(mat[row][col] > element){
-// 			col--;
-// 		} else {
-// 			row++;
-// 		}
-// 	}
-// 	return false;
+/*finds an element in an ordered matrix */
+public boolean findElem(int[][] mat, int m, int n, int element){
+	int row = 0;
+	int col = n - 1; 
+	while(row < m && col >= 0){
+		if(mat[row][col] == element){
+			return true;
+		}
+		if(mat[row][col] > element){
+			col--;
+		} else {
+			row++;
+		}
+	}
+	return false;
 
-// }
+}
 
-// public static int findMissingAP(int size, int[] array){
-// 	int diff = (array[size - 1] - array[0]) / size;
+/* FINDS MISSING NUMBER IN AP O(N) */
+public static int findMissingAP(int size, int[] array){
+	int diff = (array[size - 1] - array[0]) / size;
 	
-// 	for(int i = 0; i < size - 1; i++){
-// 		if( (array[i+1] - array[i]) != diff ) return (array[i] + diff);
-// 	}
-// 	return 0;
-// }
+	for(int i = 0; i < size - 1; i++){
+		if( (array[i+1] - array[i]) != diff ) return (array[i] + diff);
+	}
+	return 0;
+}
 
 
 
