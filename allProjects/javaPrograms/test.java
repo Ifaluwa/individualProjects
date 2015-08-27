@@ -403,49 +403,49 @@ public static long pow(int num, int exp){
 //  }
 
 
-public static void findSum(TreeNode head, int sum, ArrayList<Integer> buffer, int level) {
-	if (head == null) return;
-	int tmp = sum;
-	buffer.add(head.data);
-	for (int i = level;i >- 1; i--){
-		tmp -= buffer.get(i);
-		if (tmp == 0) print(buffer, i, level);
-	}
+// public static void findSum(TreeNode head, int sum, ArrayList<Integer> buffer, int level) {
+// 	if (head == null) return;
+// 	int tmp = sum;
+// 	buffer.add(head.data);
+// 	for (int i = level;i >- 1; i--){
+// 		tmp -= buffer.get(i);
+// 		if (tmp == 0) print(buffer, i, level);
+// 	}
 	
-	ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
-	ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
-	findSum(head.left, sum, c1, level + 1);
-	findSum(head.right, sum, c2, level + 1);
+// 	ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
+// 	ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
+// 	findSum(head.left, sum, c1, level + 1);
+// 	findSum(head.right, sum, c2, level + 1);
 
-}
+// }
 
 
-static int columnForRow[] = new int[8];
-boolean check(int row){
+// static int columnForRow[] = new int[8];
+// boolean check(int row){
 
-	for(int i = 0; i < row; i++){
-		int diff = Math.abs(columnForRow[i] - columnForRow[row]);
-		if(diff == 0 | diff == row - 1) return false;
-	}
-	return true;  //returns true if the pieces are not on the same column or diagonal
-}
+// 	for(int i = 0; i < row; i++){
+// 		int diff = Math.abs(columnForRow[i] - columnForRow[row]);
+// 		if(diff == 0 | diff == row - 1) return false;
+// 	}
+// 	return true;  //returns true if the pieces are not on the same column or diagonal
+// }
 
-void placeQueen(int row){
-	// base case for if we've placed on pieces
-	if(row == FINAL_SIZE){ 
-		printBoard();
-		return;
-	}
+// void placeQueen(int row){
+// 	// base case for if we've placed on pieces
+// 	if(row == FINAL_SIZE){ 
+// 		printBoard();
+// 		return;
+// 	}
 
-	//recursive case keeps checking until finds somewhere to place, if it doesn't it backtracks
-	for(int i = 0; i < FINAL_SIZE; i++){
-		columnForRow[row] = i;
-		if(check(row)){
-			placeQueen(row + 1);
-		}
-	}
+// 	//recursive case keeps checking until finds somewhere to place, if it doesn't it backtracks
+// 	for(int i = 0; i < FINAL_SIZE; i++){
+// 		columnForRow[row] = i;
+// 		if(check(row)){
+// 			placeQueen(row + 1);
+// 		}
+// 	}
 
-}
+// }
 
 /*finds an element in an ordered matrix */
 public boolean findElem(int[][] mat, int m, int n, int element){
@@ -475,17 +475,66 @@ public static int findMissingAP(int size, int[] array){
 	return 0;
 }
 
+static long fib(int n){
+	return n <= 1 ? n : fib(n-1) + fib(n-2);
+}
+
+public static void mulTables(int max){
+
+	for(int i = 1; i <= max; i++){
+		for(int k = 1; k <= max; k++){
+			System.out.print( String.format ( "%4d", k * i )) ;
+		}
+		System.out.println();
+	}
+}
+
+public static void sumFile ( String name ) {
+        try {
+            int total = 0;
+            BufferedReader in = new BufferedReader ( new FileReader ( name ));
+            for ( String s = in.readLine(); s != null; s = in.readLine() ) {
+                total += Integer.parseInt ( s );
+            }
+            System.out.println ( total );
+            in.close();
+        }
+        catch ( Exception xc ) {
+            xc.printStackTrace();
+        }
+    }
+
+    public static void printOdds(){
+    	for(int i = 1; i < 100; i += 2){
+    		System.out.println(i);
+    	}
+
+    }
+
+    public static int largest(int[] input){
+    	int max = Integer.MIN_VALUE;
+    	for(int i = 0; i < input.length; i++){
+    		if(max < input[i]) max = input[i];
+    	}
+    	return max;
+    }
+    
+
+ 
+
+
 
 
 public static void main(String[] args){
-	String atoiVariable = "77";
-	String duplicateString = "faded af";
-	int[] maxCrossingArray = {1,-2,3,6,7,8,-9,2,4};
-	System.out.println("function atoi >> " + atoi(atoiVariable));
-	System.out.println("function removeDuplicates >> " + removeDuplicates(duplicateString));
-	System.out.println("function maxCrossingArray >> " + findMaxCrossingSubArray(maxCrossingArray));
-	quickSort(maxCrossingArray, 0, maxCrossingArray.length);
-	System.out.println("Quicksorted array > " + Arrays.toString(maxCrossingArray) );
+	// String atoiVariable = "77";
+	// String duplicateString = "faded af";
+	// int[] maxCrossingArray = {1,-2,3,6,7,8,-9,2,4};
+	// System.out.println("function atoi >> " + atoi(atoiVariable));
+	// System.out.println("function removeDuplicates >> " + removeDuplicates(duplicateString));
+	// System.out.println("function maxCrossingArray >> " + findMaxCrossingSubArray(maxCrossingArray));
+	// quickSort(maxCrossingArray, 0, maxCrossingArray.length);
+	// System.out.println("Quicksorted array > " + Arrays.toString(maxCrossingArray) );
+	// mulTables(9);
 	
 	
 	
