@@ -1,6 +1,7 @@
 
 import java.util.*;
-import javax.swing.tree.TreeNode;
+import java.util.regex.Pattern;
+import java.io.*;
 
 public class test {
 
@@ -58,15 +59,13 @@ public static String removeDuplicates(String str){
 	if (charArray == null) return str;
  	if (charArray.length < 2) return str;
  	
- 	//initialize tail end
- 	int tail = 1;
 
  	//starting from the second character(innerloop) check for if any character before it is a duplicate
  	for(int i = 1; i < charArray.length; ++i){
- 		for(int j = 0; j < tail; ++j){
+ 		for(int j = 0; j < i; ++j){
  			if (charArray[i] == charArray[j]) charArray[i] = 0;
  		}
- 		tail++;
+ 		
  	}
 
  	// convert character array to string and return
@@ -240,36 +239,35 @@ public static int binarySearch(int[] array, int needle, int start, int end){
 // 	return array;
 // }
 
-// /* REVERSING A LINKED LIST */
-// public static void reverse(Node current){
-// 	//check for empty list
-// 	if(current == NULL ){
-// 		return;
-// 	}
+/* REVERSING A LINKED LIST */
+public static Node reverse(Node current){
+	//check for empty list
+	if(current == null || current.next == null ){
+		return current;
+	}
 	
-// 	// BASE CASE
-// 	if(current.next == NULL){
-// 		head = current;
-// 		return;
-// 	}
+	Node secondElem = current.next;
+	current.next = null;
 
-// 	reverse(current.next);
-// 	current.next.next = current;
-// 	/*current.next = current.prev;  for doubly linked list */
-// 	current.next = null;
-
-// }
+	Node reverseSet = reverse(secondElem);
+	secondElem.next = current;
+	
+	return reverseSet;
+}
 
 
 /* reverse string O(N) */
 public static String reverseString(String str){
-	StringBuilder nStr = new StringBuilder();
+	
+	char[] chars = str.toCharArray();
+	int size = str.length() - 1;
 
-	for(int i = str.length() - 1; i >= 0; i--){
-		nStr.append(str.charAt(i));
-
+	for(int i = 0; i <= size/2; i++){
+		char nChar = chars[size - i];
+		chars[size - i] = chars[i];
+		chars[i] = nChar;	
 	}
-	return nStr.toString();
+	return new String(chars);
 }
 
 // check if a string has a sub string O(N^2) */
@@ -489,20 +487,20 @@ public static void mulTables(int max){
 	}
 }
 
-public static void sumFile ( String name ) {
-        try {
-            int total = 0;
-            BufferedReader in = new BufferedReader ( new FileReader ( name ));
-            for ( String s = in.readLine(); s != null; s = in.readLine() ) {
-                total += Integer.parseInt ( s );
-            }
-            System.out.println ( total );
-            in.close();
-        }
-        catch ( Exception xc ) {
-            xc.printStackTrace();
-        }
-    }
+// public static void sumFile ( String name ) {
+//         try {
+//             int total = 0;
+//             BufferedReader in = new BufferedReader ( new FileReader ( name ));
+//             for ( String s = in.readLine(); s != null; s = in.readLine() ) {
+//                 total += Integer.parseInt ( s );
+//             }
+//             System.out.println ( total );
+//             in.close();
+//         }
+//         catch ( Exception xc ) {
+//             xc.printStackTrace();
+//         }
+//     }
 
     public static void printOdds(){
     	for(int i = 1; i < 100; i += 2){
@@ -518,27 +516,268 @@ public static void sumFile ( String name ) {
     	}
     	return max;
     }
+
+    public static void swap(int a, int b){
+    	a = a^b;
+    	b = a^b;
+    	a = a^b;
+    	System.out.println(a +" "+ b);
+    }
+
+    public static int numZeros(int num){
+    	int count = 0;
+    	if(num < 0){
+    		System.out.println("Non-negative numbers only!");
+    	}
+
+    	for (int i = 5; i <= num ; i *= 5){
+    		count += num/i;
+
+    	}
+    	return count;
+
+    }
+
+    public static void findMax(int a, int b){
+    	int c = a - b;
+    	int k = (c >> 31) & 0x1;
+    	//System.out.println(a - k * c);
+    }
+
+    public static String toHex(int n){
+    StringBuffer buffer = new StringBuffer(); 
+    while (n > 0) { 
+    	int base = n % 16;
+    	buffer.append( (base < 10 ? base : (char)('a'+ base-10) )); 
+    	n /= 16; 
+   	}
+   	 String result = reverseString(buffer.toString());
+   	 return result;
+   	}
     
+ //    public static void inOrder (Node root)
+	// {
+ 
+ //  	if(root == null) return;
+  
+ //  	inOrder( root.leftNode() );
+  
+ //  	root.printNodeValue();
+  
+ //  	inOrder( root.rightNode() ); 
+  
+	// }
+
+	public static String longestSubstring(String str, int max){
+		boolean[] data = new boolean[256];
+		int limit = 0;
+		int size = 0;
+		int maxSize = 0;
+		int start = 0;
+		int end = 0;
+		int i = 0;
+		int k = 0;
+
+	for( k = 0; k < str.length(); k++){
+		for(i = k; limit <= max; i++){
+			if(!data[str.charAt(i)]) {
+				limit++;
+				data[str.charAt(i)] = true;
+			}
+		}
+		size = i - k;
+		System.out.println(size);
+		if (size > maxSize){
+ 			maxSize = size;
+			start = i;
+			end = k;
+		}
+	}
+	System.out.println(str.length()); 
+	
+
+
+	return str.substring(start, end);
+
+	}
+
+	// public void printInOrder(Node root){
+	// 	if(root == null) return;
+
+	// 	printInOrder(root.left);
+	// 	System.out.println(root.data);
+	// 	printInOrder(root.right);
+	// }
+// public static boolean isBalanced(Node root){
+// 	int leftSum;
+// 	int rightSum;
+// 	leftSum = checkValues(root.left);
+// 	rightSum = checkValues(root.right);
+// 	return leftSum == rightSum;
+// }
+
+public static int  checkValues(Node val){
+	if(val == null) return 0;
+	if (val.left == null && val.right == null){
+		return val.data;
+	}
+	else {
+		return checkValues(val.left) + checkValues(val.right) + val.data;
+	}
+}
+	
+ static void findingDigits(int[] foo) {
+        
+        for(int i = 0; i < foo.length; i++){
+            int count = 0;
+            int standard = foo[i];
+            while(standard > 0){
+                int rem = standard % 10;
+                standard /= 10;
+                if (rem == 0) continue;
+                else if((foo[i] % rem) == 0) count++; 
+            }
+            System.out.println(count);
+        }
+        
+
+
+    }
+
+    static void maxProfit(int[] prices){
+    	
+
+    	int start = 0;
+    	int sum = 0;
+    	int maxp = Integer.MIN_VALUE;
+    	int min = prices[0];
+    	for(int end = 1; end < prices.length; end++){
+    		int val = prices[end] - prices[start];
+
+    		if(val < 0){
+    			if(prices[end] < min){
+    				min = prices[end];
+    				start = end;
+    			}
+    		}
+
+    		if(val > maxp){
+    			maxp = val;
+    		}
+    	}
+
+    	System.out.println(maxp);
+
+    }
+
+public static int gcd(int[] arr){
+	int a = arr[0];
+	for(int i = 1; i < arr.length; i++){
+		a = gcdHelper(a, arr[i]);
+	}
+	return a;
+}    
+
+static int gcdHelper(int m, int n){
+	if(m == n)
+      return m;
+    else if (m > n)
+      return gcdHelper(m-n, n);
+    else
+      return gcdHelper(m, n-m);
+}
 
  
 
 
 
 
-public static void main(String[] args){
+public static void main(String[] args) throws IOException{
+	int [] arr = {4, 6, 18};
+	int ans = gcd(arr);
+	System.out.println(ans);
+	Integer a = new Integer(10.75);
+	System.out.println(a);
+
+	// String sX = "hello";
+	// String s1 = "hel";
+	// String s2 = "lo";
+	// System.out.println(sX.equals(s1+s2));
+	// int[] prices = {40, 40, 40, 43, 10, 12};
+	// maxProfit(prices);
+	// Node test = new Node(8);
+	// test.appendToTail(3);
+	// System.out.println(test.next);
+	
+
+	// String answer;
+	// answer = longestSubstring("ABCDEABABEED", 4);
+	// System.out.println(answer);
+
+	// findMax(101, 100);
+	// String answer;
+	// answer = toHex(12);
+	// System.out.println(answer);
+	// int count = numZeros(26);
+	// System.out.println(count);
 	// String atoiVariable = "77";
-	// String duplicateString = "faded af";
+	//String duplicateString = "faded af";
 	// int[] maxCrossingArray = {1,-2,3,6,7,8,-9,2,4};
 	// System.out.println("function atoi >> " + atoi(atoiVariable));
-	// System.out.println("function removeDuplicates >> " + removeDuplicates(duplicateString));
+	//System.out.println("function removeDuplicates >> " + removeDuplicates(duplicateString));
 	// System.out.println("function maxCrossingArray >> " + findMaxCrossingSubArray(maxCrossingArray));
 	// quickSort(maxCrossingArray, 0, maxCrossingArray.length);
 	// System.out.println("Quicksorted array > " + Arrays.toString(maxCrossingArray) );
 	// mulTables(9);
+	// HashMap<String, Integer> numbers = new HashMap<>();
+	// numbers.put("one", 1);
+	// System.out.println(numbers.get("one"));
+	// String random = "lana";
+	// String reverse = reverseString(random);
+	// System.out.println(reverse);
+	 // boolean b = Pattern.matches("ab", "ab");
+	 // System.out.println(b);
+
+	// InputStreamReader cin = null;
+	// FileReader in = null;
+	// FileWriter out = null;
+
+
+	// try {
+ //         cin = new InputStreamReader(System.in);
+ //         in = new FileReader("input.txt");
+ //         out = new FileReader("output.txt");
+ //         System.out.println("Enter characters, 'q' to quit.");
+ //         char c;
+        
+ //        do {
+ //            c = (char) cin.read();
+ //            System.out.print(c);
+ //        } while(c != 'q');
+      
+ //    }finally {
+ //         if (cin != null)
+ //        {
+ //            cin.close();
+ //        }
+
+ //     }
+
+
+
+
 	
 	
 	
 }
 
+	public class Node{
+		Node left;
+		Node right;
+		Node next;
+		int data;
+	}
 }
+
+
 
