@@ -1,0 +1,75 @@
+
+@media screen and (min-width: 480px) {
+  
+  #home {
+    background-image:url('../img/imme.jpg');
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:contain;
+  }
+  
+#primary {
+    width: 100%;
+    
+  }
+  
+  #secondary {
+    width:100%;
+       
+}
+
+
+/***************************************************
+PAGE portfolio
+***************************************************/
+
+#gallery li{
+  width:28.33333%;
+}
+
+#gallery li:nth-child(4n){
+  clear:left;
+}
+
+/***************************************************
+PAGE about
+***************************************************/
+
+}
+
+@media screen and (min-width: 660px) {
+/***************************************************
+HEADER
+***************************************************/
+  
+ nav {
+    background: none;
+    float: none;
+    font-size: 1.125em;
+    margin-right: 5%;
+    width: 100%;
+  }
+  #Logo {
+    float:none;
+    margin-left: 5%;
+    text-align: center;
+    width:45%;
+  }
+  
+  h1 {
+  font-size:2.5em;
+  }
+  
+   h2 {
+  
+  margin-bottom: 0px;
+  }
+  
+  header {
+    border-bottom: 1px solid;
+    margin-bottom: 8px;
+  }
+    
+}
+
+  
