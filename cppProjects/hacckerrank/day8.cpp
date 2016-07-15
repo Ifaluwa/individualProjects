@@ -14,7 +14,7 @@ int main() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
     int N;
     cin >> N;
-    
+
     
     //defining dictionary
     map<string, long int> dict;
@@ -29,9 +29,7 @@ int main() {
     }
     
     //checking entries
-    for(int i = 0; i < N; i++){
-        string key;
-        cin >> key;
+    while(cin >> key){
         
         if (dict.find(key) != dict.end()){
             cout << key << "=" << dict[key] << endl;

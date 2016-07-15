@@ -22,4 +22,15 @@ class Node{
 		}
 		n.next  = end;
 	}
+
+	void print (){
+		Node cur = this;
+		while(cur.next != null){
+			System.out.print(cur.data+"->");
+			cur = cur.next;
+		}
+		System.out.print(cur.data);
+		System.out.println();
+	}
+
 }
